@@ -20,6 +20,7 @@ import os
 import cv2
 import pandas as pd
 import numpy as np
+from webimg import url_to_image
 
 # [START import_client_library]
 #from google.cloud import vision
@@ -32,7 +33,7 @@ net = cv2.dnn.readNetFromCaffe('deploy.prototxt.txt', 'res10_300x300_ssd_iter_14
 
 
 def deep_convert(f, pic_id, return_rectangle = False, save_img=False):
-    image = cv2.imread(f)
+    image = url_to_image(f)
 
     (h, w) = image.shape[:2]
     blob = cv2.dnn.blobFromImage(cv2.resize(image, (300, 300)), 1.0,
