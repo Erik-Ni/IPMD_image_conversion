@@ -42,6 +42,9 @@ def deep_convert(f, pic_id, return_rectangle = False, save_img=False):
     net.setInput(blob)
     detections = net.forward()
 
+    image_output = []
+    box_output = []
+
     for i in range(0, detections.shape[2]):
         confidence = detections[0, 0, i, 2]
         if confidence > 0.5:
@@ -68,8 +71,10 @@ def deep_convert(f, pic_id, return_rectangle = False, save_img=False):
                     head, tail = os.path.split(f)
                     outfile = 'output/'+str(pic_id)+'-'+tail
                     cv2.imwrite(outfile, output)
-                temp_output = output.flatten()
+                image_output.append(output.flatten())
                 if return_rectangle:
-                    return temp_output, [left, right, up, bottom, w]
-                return temp_output
+                    box_output.append([left, right, up, bottom, w])
+    if return_rectangle:
+        return image_output, box_output
+    return image_output
 
